@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "SORT";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using FileSortAndRename.Helpers
+@model IList<FileSortAndRename.Models.FileItem>
+<style>
+    #sortable
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 60%;
+    }
+
+        #sortable li
+        {
+            margin: 0 3px 3px 3px;
+            padding: 0.1em;
+            padding-left: 1.5em;
+            font-size: 1.0em;
+            height: 55px;
+            border: dotted 1px #a4b1e3;
+        }
+
+            #sortable li span
+            {
+                position: absolute;
+                margin-left: -1.3em;
+            }
+</style>
+<h2>Sort Files</h2>
+
+<ul id="sortable">
+    @foreach (var fileItem in Model)
+    {
+        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+            @Html.Raw(@Html.Image(fileItem.Name, fileItem.Path, new { width = 40, height = 40 }))&nbsp;&nbsp;
+            @fileItem.Name (@(fileItem.Size / 1000) KB)
+        </li>
+    }
+
+</ul>
+
+<script>
+    $(function () {
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
+    });
+</script>

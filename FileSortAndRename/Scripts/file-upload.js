@@ -1,5 +1,4 @@
 ﻿
-
 var filequeue = new Array();
 
 function fileSelected() {
@@ -11,8 +10,8 @@ function fileSelected() {
             var selectedfile;
 
             var files = document.getElementById('filesToUpload').files;
-            if (files.length > 500) {
-                alert('Maximum number of 500 allowable file uploads has been exceeded!!');
+            if (files.length > 100) {
+                alert('You can only upload 100 files per session');
             } else {
 
                 for (var i = 0; i < files.length; i++) {
@@ -82,15 +81,13 @@ function uploadFiles() {
     try {
 
         if (filequeue != null && filequeue.length != 0) {
-
             while (filequeue.length > 0) {
-
                 var item = filequeue.pop();
                 var file = item.file;
                 var li = item.lisetElement;
                 resizeAndUpload(file, li);
-
             }
+            
         }
 
     } catch (err) {
@@ -157,18 +154,18 @@ function resizeAndUpload(file, li) {
                             }
 
                             else if (xhr.readyState == 4) {
-
+                                var label = $(li).find("label");
+                                
                                 if (xhr.status == 500) {
-
-                                    containtext = $(li).find("label").text();
-                                    $(li).find("label").text(containtext + " upload error");
-                                    $(li).find("label").css("color", "#FF0000");
-
+                                    containtext = label.text();
+                                    label.text(containtext + " upload error");
+                                    label.css("color", "#FF0000");
                                 }
                                 else if (xhr.status == 200) {
-                                    containtext = $(li).find("label").text();
-                                    $(li).find("label").text(containtext + " (complete)");
-
+                                    containtext = label.text();
+                                    label.text(containtext + " (complete)");
+                                    label.css("color", "#1309eb");
+                                    label.css("font-weight", "bold");
                                 }
 
                             }
