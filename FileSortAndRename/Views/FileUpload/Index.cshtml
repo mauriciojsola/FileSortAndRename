@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "File Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>    
+    <span>First step: </span><input type="button" value="Choose images" class="btn-large btn-primary" onclick="javascript: document.getElementById('filesToUpload').click();">
+                             <input type="file" accept="image/*" multiple name="filesToUpload[]" id="filesToUpload" style='visibility: hidden;'
+                                    onchange="fileSelected();" />
+    </p>
+<div style="clear:both;">
+    <ul class="inline alert-info" id="uploadfilelist">
+    </ul>
+</div>
+
+<p style="margin-top:15px;">
+<input type="button" onclick="uploadFiles();" value="Upload (max 500 files)" class="btn-large btn-success" />
+   </p>    
+
+<script type="text/javascript">
+    var UPLOAD_URL = '@Url.Action("UploadSizeReducedFiles", "FileUpload")';
+</script>
