@@ -34,7 +34,7 @@
 <ul id="sortable">
     @foreach (var fileItem in Model)
     {
-        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+        <li class="ui-state-default" id="@fileItem.Name"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
             @Html.Raw(@Html.Image(fileItem.Name, fileItem.Path, new { width = 40, height = 40 }))&nbsp;&nbsp;
             @fileItem.Name (@(fileItem.Size / 1000) KB)
         </li>
@@ -42,9 +42,36 @@
 
 </ul>
 
+<div>
+    <input id="btnSaveFiles" type="button" value="Save Files" class="btn-large btn-success" />
+</div>
+
+
 <script>
     $(function () {
         $("#sortable").sortable();
         $("#sortable").disableSelection();
+        
+        $('#btnSaveFiles').click(function () {
+            var url = '@Url.Action("SaveFiles", "FilesSort")';
+            var list = $('#sortable').sortable("toArray").join("|");
+            var data = { 'filesList': list };
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                async: true,
+                success: function (result) {
+                    var isSuccess = eval(result);
+                    if (!isSuccess){
+                        alert("ERROR!");
+                    }
+                    else {
+                        alert("SUCCESS!");
+                    }
+                }
+            });
+
+        });
     });
 </script>
