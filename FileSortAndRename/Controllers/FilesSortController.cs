@@ -3,45 +3,53 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using FileSortAndRename.Helpers;
 using FileSortAndRename.Models;
 
 namespace FileSortAndRename.Controllers
 {
-    public class FilesSortController : Controller
+    public class FilesSortController : BaseController
     {
         //
         // GET: /FilesSort/
 
         public ActionResult Index()
         {
+            return View(BuildFileList());
+        }
+
+        public ActionResult GetFilesList()
+        {
+            return Json(BuildFileList(), JsonRequestBehavior.AllowGet);
+        }
+
+        private IList<FileItem> BuildFileList()
+        {
             var fileList = new List<FileItem>();
 
             var files = Directory.GetFiles(Server.MapPath("~/Uploads"));
 
-            foreach (var file in files)
+            foreach (var file in files.ToList().OrderBy(x => x))
             {
                 var fileInfo = new FileInfo(file);
 
                 var fileItem = new FileItem
-                                   {
-                                       Name = Path.GetFileName(file),
-                                       Size = fileInfo.Length,
-                                       Path = ("~/Uploads/") + Path.GetFileName(file)
-                                   };
+                {
+                    Name = Path.GetFileName(file),
+                    Size = fileInfo.Length,
+                    Path = ("Uploads/") + Path.GetFileName(file)
+                };
 
                 fileList.Add(fileItem);
             }
-
-            return View(fileList);
+            return fileList;
         }
 
         public ActionResult SaveFiles(string filesList)
         {
+            if(string.IsNullOrEmpty(filesList)) return new EmptyResult();
             var orderIndex = 1;
             var files = filesList.Split('|').ToList();
-
-            // Get the files from the OrderedFiles directory
-            //var oldOrderedFiles = Directory.GetFiles(Server.MapPath("~/Uploads/OrderedFiles"));
 
             try
             {
@@ -64,11 +72,13 @@ namespace FileSortAndRename.Controllers
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                //Flash[FlashKey.Error] = ex.Message;
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
-            return Json(true, JsonRequestBehavior.AllowGet);
+            //Flash[FlashKey.Notice] = "Files saved successfuly.";
+            return Json(BuildFileList(), JsonRequestBehavior.AllowGet);
         }
 
         private string GetFileNameWithoutOrderIndex(string fileName)

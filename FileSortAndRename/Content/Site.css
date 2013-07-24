@@ -749,3 +749,49 @@ a.twitter
    
 
 }
+
+/* Flash styles
+-----------------------------------------------------------*/
+#flash-box, .flash-box
+{
+    border: 1px solid #FFFFFF;
+    font-size: 12px;
+    padding: 8px 4px 8px 40px;
+    margin-bottom: 8px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+#flash-box.notice, .flash-box.notice
+{
+    background: url("../Content/Images/tick.png") no-repeat scroll 8px 50% #DFFFDF;
+    border-color: #9FCF9F;
+    color: #005F00;
+}
+#flash-box.warning, .flash-box.warning
+{
+    background: url("../Content/Images/alert.png") no-repeat scroll 8px 50% #FFEBC1;
+    border-color: #FDBF3B;
+    color: #A6750C;
+}
+#flash-box.error, .flash-box.error
+{
+    background: url("../Content/Images/error.png") no-repeat scroll 8px 50% #FFE3E3;
+    border-color: #f29999;
+    color: #880000;
+}
+#flash-box ul
+{
+    list-style-type: disc;
+    margin-left: 20px;
+}
+#flash-box ul li
+{
+    margin: 8px 0;
+}
+#flash-box p, .flash-box p
+{
+    margin-top: 10px;
+}
+

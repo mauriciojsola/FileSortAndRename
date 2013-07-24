@@ -1,0 +1,52 @@
+﻿@using FileSortAndRename.Helpers
+@model IList<FileSortAndRename.Models.FileItem>
+
+
+<style>
+    #sortable
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 60%;
+    }
+
+        #sortable li
+        {
+            margin: 0 3px 3px 3px;
+            padding: 0.1em;
+            padding-left: 1.5em;
+            font-size: 1.0em;
+            height: 55px;
+            border: dotted 1px #a4b1e3;
+        }
+
+            #sortable li span
+            {
+                position: absolute;
+                margin-left: -1.3em;
+            }
+</style>
+
+<strong class="error">{{ error }}</strong>
+<strong ng-show="loading">loading...</strong>
+
+<ul id="sortable">
+    <li ng-repeat="fileItem in fileList" class="ui-state-default" id="{{ fileItem.Name }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+        <img ng-src="{{ fileItem.Path }}" style="max-width: 45px; max-height: 55px;" />&nbsp;&nbsp;
+        {{ fileItem.Name }}
+    </li>
+</ul>
+@*<pre ng-bind="fileList|json"></pre>*@
+
+
+@*<ul id="sortable">
+    @foreach (var fileItem in Model.ToList().OrderBy(x => x.Name))
+    {
+        <li class="ui-state-default" id="@fileItem.Name"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+            @Html.Raw(@Html.Image(fileItem.Name, fileItem.Path, new { width = 40, height = 40 }))&nbsp;&nbsp;
+            @fileItem.Name (@(fileItem.Size / 1000) KB)
+        </li>
+    }
+
+</ul>*@

@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace FileSortAndRename.Controllers
 {
-    public class FileUploadController : Controller
+    public class FileUploadController : BaseController
     {
         //
         // GET: /FilesUpload/

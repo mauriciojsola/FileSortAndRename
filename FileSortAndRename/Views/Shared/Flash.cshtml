@@ -1,0 +1,24 @@
+﻿@using FileSortAndRename.Helpers
+@{
+    var cssClass = "";
+    var message = "";
+    var renderMessage = false;
+    foreach (FlashKey key in Enum.GetValues(typeof(FlashKey)))
+    {
+        var data = TempData[string.Format("Flash_{0}", key)];
+        if (data == null) { continue; }
+
+        message = data.ToString();
+        cssClass = key.ToString().ToLower();
+        renderMessage = true;
+    }    
+}
+@if (renderMessage)
+{
+    <div id="flash-box" class="@cssClass">@Html.Raw(message)</div>
+}
+else
+{
+    <div id="flash-box" class="@cssClass" style="display:none;">
+    </div>
+}
