@@ -41,22 +41,24 @@ namespace FileSortAndRename.Controllers
             var files = filesList.Split('|').ToList();
 
             // Get the files from the OrderedFiles directory
-            var oldOrderedFiles = Directory.GetFiles(Server.MapPath("~/Uploads/OrderedFiles"));
+            //var oldOrderedFiles = Directory.GetFiles(Server.MapPath("~/Uploads/OrderedFiles"));
 
             try
             {
-                foreach (var file in files)
+                foreach (var fileName in files)
                 {
-                    var sourceFilePath = Path.Combine(Server.MapPath("~/Uploads"), file);
+                    var sourceFilePath = Path.Combine(Server.MapPath("~/Uploads"), fileName);
                     if (System.IO.File.Exists(sourceFilePath))
                     {
                         // Create the target file path
-                        var destFilePath = Path.Combine(Server.MapPath("~/Uploads/OrderedFiles"), string.Format("{0}_{1}", orderIndex.ToString().PadLeft(3, '0'), file));
+                        var destFilePath = Path.Combine(Server.MapPath("~/Uploads"), string.Format("{0}_{1}", orderIndex.ToString().PadLeft(3, '0'), GetFileNameWithoutOrderIndex(fileName)));
 
-                        DeleteOldFiles(oldOrderedFiles, file);
-                        
-                        // Copy the new ordered file
-                        System.IO.File.Copy(sourceFilePath, destFilePath);
+                        if (!sourceFilePath.Equals(destFilePath, StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Copy the new ordered file
+                            System.IO.File.Copy(sourceFilePath, destFilePath);
+                            System.IO.File.Delete(sourceFilePath);
+                        }
                     }
                     orderIndex++;
                 }
@@ -69,9 +71,20 @@ namespace FileSortAndRename.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
-        private void DeleteOldFiles(string[] oldOrderedFiles, string file)
+        private string GetFileNameWithoutOrderIndex(string fileName)
         {
-            var oldFiles = oldOrderedFiles.Where(x => x.Contains(file)).ToList();
+            // If a file was previously indexed, then it should be in a format: 001_SomeName.ext.
+            // Then, extract only the file name after the underscore char (_)
+            if (fileName.Substring(3, 1).Equals("_", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return fileName.Substring(4);
+            }
+            return fileName;
+        }
+
+        private void DeleteOldFiles(string[] oldOrderedFiles, string fileName)
+        {
+            var oldFiles = oldOrderedFiles.Where(x => x.Contains(fileName)).ToList();
 
             foreach (var oldFile in oldFiles)
             {
