@@ -37,7 +37,7 @@ namespace FileSortAndRename.Controllers
                 {
                     Name = Path.GetFileName(file),
                     Size = fileInfo.Length,
-                    Path = ("Uploads/") + Path.GetFileName(file)
+                    Path = ("Uploads/") + Path.GetFileName(file) + "?w=75&h=75&mode=max"
                 };
 
                 fileList.Add(fileItem);
@@ -85,11 +85,9 @@ namespace FileSortAndRename.Controllers
         {
             // If a file was previously indexed, then it should be in a format: 001_SomeName.ext.
             // Then, extract only the file name after the underscore char (_)
-            if (fileName.Substring(3, 1).Equals("_", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return fileName.Substring(4);
-            }
-            return fileName;
+            return fileName.Substring(3, 1).Equals("_", StringComparison.InvariantCultureIgnoreCase) 
+                ? fileName.Substring(4) 
+                : fileName;
         }
 
         private void DeleteOldFiles(string[] oldOrderedFiles, string fileName)

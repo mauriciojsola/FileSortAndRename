@@ -23,33 +23,3 @@
 
 </div>
 
-<script>
-    $(function () {
-        $("#sortable").sortable();
-        $("#sortable").disableSelection();
-
-        @* $('#btnSaveFiles').click(function () {
-            var url = '@Url.Action("SaveFiles", "FilesSort")';
-            var list = $('#sortable').sortable("toArray").join("|");
-            var data = { 'filesList': list };
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                async: true,
-                success: function (result) {
-                    //$("#sortable").html(result);
-                    var isSuccess = eval(result);
-                    if (!isSuccess) {
-                        alert("ERROR!");
-                    }
-                    else {
-                        window.location.reload();
-                    }
-                    
-                }
-            });
-
-        });*@
-    });
-</script>
